@@ -1,30 +1,45 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   <title>Sound Nanpure</title>
 
-  <!-- p5.js 本体 -->
+  <!-- p5 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
-
-  <!-- p5.sound -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/addons/p5.sound.min.js"></script>
 
   <style>
     body {
       margin: 0;
-      overflow: hidden;
+      background: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: sans-serif;
+    }
+
+    main {
       text-align: center;
     }
-    canvas {
-      display: block;
-      margin: auto;
+
+    h1 {
+      margin-bottom: 10px;
+    }
+
+    p {
+      margin-top: 0;
+      color: #555;
     }
   </style>
 </head>
 
 <body>
-  <!-- あなたのコード -->
+  <main>
+    <h1>Sound Nanpure</h1>
+    <p>Press SPACE to start</p>
+  </main>
+
   <script src="sketch.js"></script>
 </body>
 </html>
