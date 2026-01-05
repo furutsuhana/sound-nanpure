@@ -9,7 +9,6 @@ let holdgreen = false;
 let holdblue = false;
 let count = 0;
 let kpress = false;
-let flag = false;
 
 let b1, b2, b3, b4;
 let easyBtn, answerBtn;
@@ -32,6 +31,7 @@ function preload() {
 
 function setup() {
   createCanvas(800, 800);
+
   masume = new Masume();
   heya = new Heya();
   heya.answer();
@@ -56,11 +56,19 @@ function setup() {
 }
 
 function draw() {
+  // ===== オープニング画面 =====
   if (!kpress) {
     image(img, 0, 0, width, height);
+
+    fill(255);
+    textAlign(CENTER, CENTER);
+    textSize(32);
+    text("Click or Press SPACE to start", width / 2, height - 60);
+
     return;
   }
 
+  // ===== ゲーム画面 =====
   background(255);
   masume.display();
   heya.answerdisplay();
@@ -135,7 +143,13 @@ function handleInput(n) {
   }
 }
 
+// ===== 入力系 =====
+
 function mousePressed() {
+  if (!kpress) {
+    kpress = true;   // クリックでスタート
+    return;
+  }
   hold = true;
 }
 
@@ -150,8 +164,13 @@ function mouseDragged() {
 }
 
 function keyPressed() {
-  if (key === ' ') kpress = true;
+  if (key === ' ') {
+    kpress = true;   // スペースでスタート
+    return false;    // スクロール防止
+  }
 }
+
+// ===== クラス =====
 
 class Button {
   constructor(x, y, w, h) {
@@ -161,7 +180,8 @@ class Button {
     this.h = h;
   }
   judge(mx, my) {
-    return mx > this.x && mx < this.x + this.w && my > this.y && my < this.y + this.h;
+    return mx > this.x && mx < this.x + this.w &&
+           my > this.y && my < this.y + this.h;
   }
 }
 
@@ -179,7 +199,7 @@ class Cursor {
 class Heya {
   constructor() {
     this.masu = Array.from({ length: 4 }, () => Array(4).fill(0));
-    this.kotae = Array.from({ length: 4 }, () => Array(4).fill(0));
+    this.kotae = [];
     this.sum = 0;
     this.check = 0;
     this.q = 0;
@@ -215,7 +235,6 @@ class Heya {
 
   display(p, r) {
     if (p && r) this.q++;
-
     for (let a = 0; a < 4; a++) {
       for (let b = 0; b < 4; b++) {
         let v = this.masu[a][b];
@@ -233,7 +252,7 @@ class Heya {
 
   playCellSound(a, b) {
     let v = this.masu[a][b];
-    if (v >= 10) v = v / 10;
+    if (v >= 10) v /= 10;
     if (v === 1) doSound.play();
     if (v === 2) reSound.play();
     if (v === 3) miSound.play();
@@ -246,8 +265,8 @@ class Heya {
       for (let a = 0; a < 4; a++) {
         for (let b = 0; b < 4; b++) {
           let v = this.masu[a][b];
-          if (v >= 10) v = v / 10;
-          this.sum += v === this.kotae[a][b] ? 1 : 0;
+          if (v >= 10) v /= 10;
+          this.sum += (v === this.kotae[a][b]) ? 1 : 0;
         }
       }
       this.check = 1;
@@ -270,6 +289,7 @@ class Masume {
     fill(75);
     rect(50, 650, 300, 100);
     rect(450, 650, 300, 100);
+
     fill(255);
     textAlign(CENTER, CENTER);
     textSize(75);
@@ -283,3 +303,4 @@ class Masume {
     line(200, 500, 600, 500);
   }
 }
+
