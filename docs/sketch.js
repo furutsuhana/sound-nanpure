@@ -74,6 +74,25 @@ function draw() {
   heya.drawFixedCells();
   heya.drawInputs(easyBtn.judge(mouseX, mouseY), hold);
   heya.checkAnswer(answerBtn.judge(mouseX, mouseY), hold);
+  easyBtn = createButton("EASY");
+easyBtn.parent("ui");
+easyBtn.position(50, 650);
+easyBtn.style("font-size", "32px");
+easyBtn.style("padding", "20px 40px");
+easyBtn.style("background", "#555");
+easyBtn.style("color", "#fff");
+easyBtn.style("border", "2px solid #000");
+easyBtn.style("cursor", "pointer");
+
+answerBtn = createButton("ANSWER");
+answerBtn.parent("ui");
+answerBtn.position(300, 650);
+answerBtn.style("font-size", "32px");
+answerBtn.style("padding", "20px 40px");
+answerBtn.style("background", "#555");
+answerBtn.style("color", "#fff");
+answerBtn.style("border", "2px solid #000");
+answerBtn.style("cursor", "pointer");
 
   if (heya.checked) {
     if (heya.correctCount === 16) {
