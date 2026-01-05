@@ -15,7 +15,7 @@ function setup() {
   textSize(32);
 
   heya = new Heya();
-  heya.setKotae();   // ★ 修正ポイント（関数名）
+  heya.setKotae();
 }
 
 function draw() {
@@ -23,7 +23,11 @@ function draw() {
 
   if (!started) {
     fill(0);
-    text("Sound Nanpure\nPress SPACE", width / 2, height / 2);
+    text(
+      "Sound Nanpure\nPress SPACE",
+      width / 2,
+      height / 2
+    );
     return;
   }
 
@@ -32,9 +36,15 @@ function draw() {
 
 function keyPressed() {
   if (key === ' ') {
-    userStartAudio(); // ★ 音を鳴らすため必須
+    userStartAudio();   // ★ 音を鳴らすため必須
     started = true;
   }
+}
+
+function mousePressed() {
+  if (!started) return;
+  userStartAudio();
+  heya.playSoundAt(mouseX, mouseY);
 }
 
 /* =====================
@@ -44,10 +54,10 @@ class Heya {
   constructor() {
     this.size = 4;
     this.cell = 100;
+    this.offset = 100;
     this.kotae = [];
   }
 
-  // ★ 関数名を変更（重要）
   setKotae() {
     this.kotae = [
       [1, 4, 3, 2],
@@ -58,26 +68,45 @@ class Heya {
   }
 
   draw() {
+    stroke(0);
+
     for (let y = 0; y < this.size; y++) {
       for (let x = 0; x < this.size; x++) {
-        stroke(0);
+        let px = x * this.cell + this.offset;
+        let py = y * this.cell + this.offset;
+
         fill(255);
-        rect(
-          x * this.cell + 100,
-          y * this.cell + 100,
-          this.cell,
-          this.cell
-        );
+        rect(px, py, this.cell, this.cell);
 
         fill(0);
         textSize(32);
         text(
           this.kotae[y][x],
-          x * this.cell + 150,
-          y * this.cell + 150
+          px + this.cell / 2,
+          py + this.cell / 2
         );
       }
     }
   }
+
+  playSoundAt(mx, my) {
+    for (let y = 0; y < this.size; y++) {
+      for (let x = 0; x < this.size; x++) {
+        let px = x * this.cell + this.offset;
+        let py = y * this.cell + this.offset;
+
+        if (
+          mx > px && mx < px + this.cell &&
+          my > py && my < py + this.cell
+        ) {
+          let n = this.kotae[y][x];
+          if (sounds[n]) {
+            sounds[n].play();
+          }
+        }
+      }
+    }
+  }
 }
+
 
